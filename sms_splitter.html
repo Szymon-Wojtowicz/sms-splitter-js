@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Split Text into SMS Messages</title>
+</head>
+<body>
+
+<script>
+    function solution(S, K) {
+        // Split the input string into an array of individual words
+        const words = S.split(' ');
+        // Initialize variables to keep track of the current SMS message being constructed
+        // and the total number of SMS messages required
+        let currentSMS = '';
+        let numSMS = 0;
+
+        // Loop through each word in the input string
+        for (let i = 0; i < words.length; i++) {
+            const word = words[i];
+            // Check if the length of the current word is greater than the maximum SMS message length
+            if (word.length > K) {
+                // If so, return -1 to indicate that it is not possible to split the input string into SMS messages
+                return -1;
+            }
+            // Check if adding the current word to the current SMS message would exceed the maximum length
+            if ((currentSMS + ' ' + word).trim().length > K) {
+                // If so, increment the number of SMS messages and start a new SMS message with the current word
+                numSMS++;
+                currentSMS = word;
+            } else {
+                // Otherwise, add the current word to the current SMS message
+                currentSMS = (currentSMS === '') ? word : currentSMS + ' ' + word;
+            }
+        }
+
+        // Check if there is any remaining text that has not been added to an SMS message
+        if (currentSMS !== '') {
+            // If so, increment the number of SMS messages to account for the remaining text
+            numSMS++;
+        }
+
+        // Return the total number of SMS messages required
+        return numSMS;
+    }
+
+    const S = "SMS messages are really short";
+    const K = 12;
+    const messageCount = solution(S, K);
+    console.log(`SMS: ${S}`);
+    console.log(`Number of SMS messages needed: ${messageCount}`);
+    /* Given the input parameters S = "SMS messages are really short" and K = 12, the solution() function will return 3.
+    This is because the input string can be split into three separate messages as follows:
+    "SMS"
+    "messages are"
+    "really short"
+    Each of these messages has a length of 12 or less, and they cannot be further divided without breaking up a word.
+    Therefore, the function returns the minimum number of SMS messages needed to accommodate the whole text, which in this case is 3. */
+
+</script>
+</body>
+</html>
